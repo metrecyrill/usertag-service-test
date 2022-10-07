@@ -1,0 +1,1 @@
+export * from './query-get-tag-params.type';
