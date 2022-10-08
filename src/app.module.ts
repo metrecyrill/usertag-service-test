@@ -19,12 +19,14 @@ import type { ClientOpts } from 'redis';
       host: process.env.PGHOST,
       port: Number(process.env.PGPORT),
     }),
-    // CacheModule.register<ClientOpts>({
-    //   isGlobal: true,
-    //   store: redisStore,
-    //   host: 'localhost',
-    //   port: 6379
-    // }),
+    CacheModule.register<ClientOpts>({
+      isGlobal: true,
+      store: redisStore,
+      socket: {
+        host: 'localhost',
+        port: 6379
+      }
+    }),
     UserModule,
     AuthModule,
     TagModule

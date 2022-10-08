@@ -6,6 +6,7 @@ import {GetAccessToken, GetRefreshToken, GetUserId} from "./decorators";
 import {Response} from "express";
 import {LoginUserDto, RegUserDto} from "./dtos";
 import {TokenResponse} from "./responses";
+import {TokensEntity} from "./entities/tokens.entity";
 
 @ApiTags('Auth')
 @Controller('api')
@@ -35,7 +36,7 @@ export class AuthController {
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Log out user' })
     @ApiResponse({ status: 200 })
-    logout(@Res({ passthrough: true }) response: Response, @GetUserId() userId: string, @GetAccessToken() accessToken: string): Promise<void> {
+    logout(@Res({ passthrough: true }) response: Response, @GetUserId() userId: string, @GetAccessToken() accessToken: string): Promise<TokensEntity[]> {
         return this.authService.logout(response, userId, accessToken);
     }
 

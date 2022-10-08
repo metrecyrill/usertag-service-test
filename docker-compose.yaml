@@ -12,23 +12,23 @@ services:
       POSTGRES_DB: $PGDATABASE
       PG_DATA: /var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - ${PGPORT}:${PGPORT}
     volumes:
       - ./postgres/scripts:/docker-entrypoint-initdb.d
       - ./postgres/pgdata:/var/lib/postgresql/data
     restart: always
 
-#  redis:
-#    image: redis
-#    container_name: redis
-#    hostname: redis
-#    restart: unless-stopped
-#    volumes:
-#      - ./redis/data:/data
-#      - ./redis/redis.conf:/usr/local/etc/redis.conf
-#    ports:
-#      - 6379:6379
-#    command: redis-server /usr/local/etc/redis.conf
+  redis:
+    image: redis
+    container_name: redis
+    hostname: redis
+    restart: unless-stopped
+    volumes:
+      - ./redis/data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis.conf
+    ports:
+      - ${REDISPORT}:${REDISPORT}
+    command: redis-server /usr/local/etc/redis.conf
 
   app:
     container_name: app
@@ -36,12 +36,13 @@ services:
     env_file:
       - .env
     ports:
-      - "3000:3000"
+      - ${PORT}:${PORT}
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
       - postgres
+      - redis
     restart: always
 
 volumes:
